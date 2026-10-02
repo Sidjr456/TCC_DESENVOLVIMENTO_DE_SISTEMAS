@@ -2,27 +2,27 @@
 session_start();
 header('Content-Type: application/json');
 
-// 1. Verificação de Segurança
+// Habilita exibição de erros temporariamente para debug (REMova isso depois que funcionar)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 if (!isset($_SESSION['usuario_id'])) {
     http_response_code(401);
     echo json_encode(['erro' => 'Não autorizado']);
     exit;
 }
 
-$cargo = $_SESSION['usuario_cargo'] ?? 'FUNCIONARIO';
-$nivel = $_SESSION['usuario_nivel'] ?? 'FUNCIONARIO';
-$verFinanceiro = ($nivel === 'ADMIN' || $cargo === 'Gerente');
-$verEstoque = ($nivel === 'ADMIN' || $cargo === 'Gerente' || $cargo === 'Cozinheiro');
+// ... (suas variáveis de cargo/nivel) ...
 
-// 2. Conexão com o Banco (Sobe 1 nível para a pasta backend)
-require_once '../conexao.php'; // Se o seu arquivo for "conexão.php" com acento, mude aqui!
+// CORREÇÃO AQUI:
+require_once __DIR__ . '/../conexao.php'; 
+// Se conexao.php estiver na mesma pasta que dados_dashboard.php, use apenas: __DIR__ . '/conexao.php';
+
 $mysql = new BancodeDados();
 $mysql->conecta();
 $con = $mysql->con;
 
-$response = [];
-
-// 3. DADOS FINANCEIROS (Apenas Admin/Gerente)
 if ($verFinanceiro) {
     $fat_hoje = mysqli_fetch_assoc(mysqli_query($con, "SELECT SUM(TOTAL) as total FROM VENDA WHERE STATUS='FINALIZADA' AND DATE(DATA_CADASTRO) = CURDATE()"))['total'] ?? 0;
     $desp_hoje = mysqli_fetch_assoc(mysqli_query($con, "SELECT SUM(TOTAL) as total FROM COMPRA WHERE STATUS='FINALIZADA' AND DATE(DATA_CADASTRO) = CURDATE()"))['total'] ?? 0;
@@ -42,12 +42,12 @@ if ($verFinanceiro) {
     $response['financeiro'] = null;
 }
 
-// 4. DADOS DE PEDIDOS (Todos veem)
+
 $pedidos_hoje = mysqli_fetch_assoc(mysqli_query($con, "SELECT COUNT(*) as total FROM VENDA WHERE DATE(DATA_CADASTRO) = CURDATE()"))['total'] ?? 0;
 $response['pedidos_hoje'] = (int)$pedidos_hoje;
 $response['pedidos_semana'] = [12, 19, 15, 25, 22, 30, (int)$pedidos_hoje];
 
-// 5. DADOS DE ESTOQUE (Admin/Gerente/Cozinheiro)
+
 if ($verEstoque) {
     $query_alertas = "SELECT NOME, DATA_VALIDADE, ESTOQUE, ESTOQUE_MINIMO FROM PRODUTO 
                       WHERE (DATA_VALIDADE <= DATE_ADD(CURDATE(), INTERVAL 3 DAY) AND DATA_VALIDADE IS NOT NULL) 
@@ -70,7 +70,7 @@ if ($verEstoque) {
     $response['estoque'] = null;
 }
 
-// 6. EQUIPE ONLINE (Últimos 15 minutos)
+
 $query_equipe = "SELECT NOME, CARGO FROM USUARIOS WHERE ULTIMO_LOGIN >= NOW() - INTERVAL 15 MINUTE AND ATIVO='ATIVO'";
 $result_equipe = mysqli_query($con, $query_equipe);
 $lista_equipe = [];

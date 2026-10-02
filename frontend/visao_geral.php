@@ -298,7 +298,7 @@ $verEstoque = ($nivel === 'ADMIN' || $cargo === 'Gerente' || $cargo === 'Cozinhe
     </main>
   </div>
 
-  <!-- SCRIPT ORIGINAL MANTIDO -->
+
   <script>
     function gerarCodigoEquipe() {
       const funcao = document.getElementById('funcao-funcionario').value;
@@ -309,7 +309,7 @@ $verEstoque = ($nivel === 'ADMIN' || $cargo === 'Gerente' || $cargo === 'Cozinhe
 
       fetch('../backend/gerar_codigo_processa.php', { // Corrigido nome do arquivo conforme seu original
           method: 'POST',
-          body: formData
+          body: formData  
         })
         .then(async response => {
           const text = await response.text();
@@ -340,151 +340,7 @@ $verEstoque = ($nivel === 'ADMIN' || $cargo === 'Gerente' || $cargo === 'Cozinhe
     }
   </script>
 
-  <!-- NOVO: SCRIPT PARA CARREGAR OS DADOS DO DASHBOARD E GRÁFICOS -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      fetch('../backend/api/dados_dashboard.php')
-        .then(res => res.json())
-        .then(data => {
-          if (data.erro) return;
+<script src="dashboard.js"></script> 
 
-          // Atualiza cards se os dados vierem da API
-          if (data.financeiro) {
-            document.getElementById('fat-hoje').innerText = `R$ ${data.financeiro.faturamento_hoje}`;
-
-            // Gráfico Pizza
-            new Chart(document.getElementById('graficoPizza'), {
-              type: 'doughnut',
-              data: {
-                labels: ['Lucro', 'Despesas'],
-                datasets: [{
-                  data: [data.financeiro.lucro, data.financeiro.despesas],
-                  backgroundColor: ['#4ade80', '#ef4444'],
-                  borderWidth: 0
-                }]
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    position: 'bottom',
-                    labels: {
-                      color: '#f2e3c6'
-                    }
-                  }
-                }
-              }
-            });
-
-            // Gráfico Barra
-            new Chart(document.getElementById('graficoBarra'), {
-              type: 'bar',
-              data: {
-                labels: ['Capital Inicial', 'Capital Atual'],
-                datasets: [{
-                  data: [data.financeiro.capital_inicial, data.financeiro.capital_atual],
-                  backgroundColor: ['#ab6550', '#4ade80'],
-                  borderRadius: 6
-                }]
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                  y: {
-                    ticks: {
-                      color: '#f2e3c6'
-                    },
-                    grid: {
-                      color: 'rgba(242, 227, 198, 0.1)'
-                    }
-                  },
-                  x: {
-                    ticks: {
-                      color: '#f2e3c6'
-                    }
-                  }
-                },
-                plugins: {
-                  legend: {
-                    display: false
-                  }
-                }
-              }
-            });
-          }
-
-          document.getElementById('pedidos-hoje').innerText = data.pedidos_hoje;
-          if (data.estoque) document.getElementById('alertas-estoque').innerText = data.estoque.total_alertas;
-
-          // Gráfico Linha (Pedidos - Visível para todos)
-          new Chart(document.getElementById('graficoLinha'), {
-            type: 'line',
-            data: {
-              labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
-              datasets: [{
-                label: 'Pedidos',
-                data: data.pedidos_semana,
-                borderColor: '#b12e2f',
-                backgroundColor: 'rgba(177, 46, 47, 0.1)',
-                fill: true,
-                tension: 0.4
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              scales: {
-                y: {
-                  ticks: {
-                    color: '#f2e3c6'
-                  },
-                  grid: {
-                    color: 'rgba(242, 227, 198, 0.1)'
-                  }
-                },
-                x: {
-                  ticks: {
-                    color: '#f2e3c6'
-                  }
-                }
-              },
-              plugins: {
-                legend: {
-                  display: false
-                }
-              }
-            }
-          });
-
-          // Lista de Vencimento
-          if (data.estoque && data.estoque.lista.length > 0) {
-            document.getElementById('lista-vencimento').innerHTML = data.estoque.lista.map(item => `
-                        <div class="alerta-vencimento ${item.critico ? 'critico' : ''}">
-                            <i class="fa-solid ${item.critico ? 'fa-circle-exclamation' : 'fa-clock'}"></i>
-                            <div><strong>${item.nome}</strong><br><small>${item.motivo}</small></div>
-                        </div>
-                    `).join('');
-          } else if (data.estoque) {
-            document.getElementById('lista-vencimento').innerHTML = '<p style="text-align:center; color:#4ade80; padding:20px;"><i class="fa-solid fa-check"></i> Estoque em dia</p>';
-          }
-
-          // Lista de Equipe
-          if (data.equipe_online && data.equipe_online.length > 0) {
-            document.getElementById('lista-equipe').innerHTML = data.equipe_online.map(func => `
-                        <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(242,227,198,0.15);">
-                            <span>${func.nome}</span>
-                            <span class="status-online" style="color:#4ade80;"><small>${func.cargo}</small></span>
-                        </div>
-                    `).join('');
-          } else {
-            document.getElementById('lista-equipe').innerHTML = '<p style="text-align:center; opacity:0.6; padding:20px;">Nenhum funcionário online no momento.</p>';
-          }
-        })
-        .catch(err => console.error('Erro ao carregar dashboard:', err));
-    });
-  </script>
-</body>
-
+  </body>
 </html>

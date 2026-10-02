@@ -3,7 +3,7 @@ session_start();
 
 class BancodeDados {
     // Definida a porta 3307 onde o seu banco de dados 'tcc' está rodando
-    private $host = "127.0.0.1:3308"; 
+    private $host = "127.0.0.1:3307"; 
     private $user = "root";
     private $senha = "";
     private $banco = "tcc";
@@ -55,7 +55,7 @@ if (!empty($pemail) && !empty($psenha)) {
             $mysql->fechar();
             
             // Redireciona para a página principal
-            header("Location: ../frontend/dashboard.php");
+            header("Location: ../frontend/visao_geral.php");
             exit;
         }
     }

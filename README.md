@@ -1,61 +1,67 @@
-﻿# 🍽️ Sistema de Gestão e Automação Comercial
+﻿# GERENCIAMENTO PERSONALIZADO DE ESTOQUE: Restaurante
 
-![Status do Projeto](https://img.shields.io/badge/Status-Em_Desenvolvimento-yellow)
-![Licença](https://img.shields.io/badge/Licença-MIT-blue)
-
-> Sistema web desenvolvido para otimização do atendimento, controle de pedidos e gestão operacional para restaurantes.
-
----
-
-## 📋 Sobre o Projeto
-
-Este projeto consiste em uma plataforma web focada em automação comercial para o setor alimentício. O objetivo é substituir processos manuais por um fluxo digital centralizado, aumentando a eficiência no atendimento de mesas e comandas, reduzindo gargalos de caixa e aprimorando a gestão de estoque e financeira do estabelecimento.
+> **Trabalho de Conclusão de Curso (TCC)**  
+> **Instituição:** ETEC de Poá — MTEC Desenvolvimento de Sistemas  
+> **Ano:** 2026  
+> **Orientadoras:** Profa. Cíntia e Profa. Carla  
+> **Autores:** Guilherme Crispim de Lima, Gustavo Soares da Costa, Leonardo Almeida Canto, Pedro Morgado Rossi, Sidnei da Silva Junior
 
 ---
 
-## 🚀 Funcionalidades Principais
+## 📌 Sobre o Projeto
 
-* **Controle de Acesso e Perfis:** Autenticação segura com níveis de acesso diferenciados (Administrador/Gerente e Atendente/Garçom).
-* **Gestão de Cardápio:** Cadastro, edição e categorização dinâmica de pratos, bebidas e adicionais.
-* **Módulo de Mesas e Comandas:** Acompanhamento em tempo real do status das mesas (Livre, Ocupada, Aguardando Pagamento).
-* **Ponto de Venda (PDV):** Fechamento ágil de contas com suporte a múltiplas formas de pagamento (Pix, Cartão de Crédito/Débito, Dinheiro).
-* **Controle de Estoque Inteligente:** Baixa automática de insumos vinculada às vendas e alertas de estoque mínimo.
-* **Dashboards e Relatórios:** Visualização analítica de faturamento, pratos mais vendidos e fluxo financeiro diário/mensal.
+O **Gerenciamento Personalizado de Estoque** é uma plataforma web desenvolvida para otimizar o controle e monitoramento de insumos em restaurantes. O sistema conecta compras, produção, logística e vendas, automatizando o controle de entrada e saída de insumos alimentícios e fornecendo dados financeiros estratégicos para a tomada de decisões.
+
+### 🎯 Principais Objetivos
+* **Controle de Estoque:** Monitorar a entrada e saída de insumos alimentícios de forma precisa.
+* **Inteligência Financeira:** Apresentar infográficos e estimativas de lucros e investimentos com base em relatórios consolidados.
+* **Controle de Validade (PEPS):** Notificar o vencimento de itens e aplicar o método "Primeiro que Entra, Primeiro que Sai" para evitar desperdícios.
+* **Gestão Dinâmica:** Atualizar o cardápio em tempo real removendo pratos cujos ingredientes estejam esgotados.
+* **Acessibilidade e Usabilidade:** Interface intuitiva desenvolvida em conformidade com as diretrizes WCAG.
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
-### **Front-end**
-* **HTML5 / CSS3 / JavaScript**
+### Linguagens e Frontend
+* **HTML5:** Estruturação das páginas web no ambiente Visual Studio.
+* **CSS3:** Estilização, design responsivo e padrão de layout.
+* **JavaScript:** Interatividade no cliente e suporte a gráficos dinâmicos.
+* **PHP:** Linguagem server-side para regras de negócio e processamento de dados.
 
-### **Back-end & Banco de Dados**
-* **PHP** *(ou linguagem/framework utilizado)*
-* **MySQL** (Modelagem relacional e persistência de dados)
+### Banco de Dados e Servidores Local
+* **MariaDB / MySQL:** Sistema gerenciador de banco de dados relacional.
+* **phpMyAdmin:** Interface web para administração das tabelas e consultas SQL.
+* **WampServer (WAMP):** Pacote com Apache, PHP e MariaDB para o ambiente local de testes no Windows.
 
-### **Ferramentas & Design**
-* **Visual Studio Code**
-* **Git & GitHub** (Controle de versão)
-* **Astah / StarUML** (Diagramas UML e casos de uso)
-
----
-
-## 📌 Escopo do Projeto
-
-* **Incluso:** Gestão interna, PDV web, controle de estoque, comandas e relatórios gerenciais.
-* **Fora de Escopo:** Emissão fiscal direta (NFC-e/SAT), módulo de recursos humanos/folha de pagamento e aplicativo nativo de delivery.
+### Ferramentas de Apoio
+* **Visual Studio Code:** Editor de código-fonte principal.
+* **HTML5 Canvas:** Renderização de gráficos e elementos visuais interativos.
+* **Claude Code:** Ferramenta de apoio baseada em IA para desenvolvimento via terminal.
 
 ---
 
-## 💻 Como Executar o Projeto
+## 🗄️ Arquitetura do Banco de Dados
+
+O banco de dados foi estruturado com base em 6 tabelas principais:
+* `USUARIO`: Gerencia perfis de acesso (`CLIENTE` e `ADMINISTRADOR`).
+* `FORNECEDOR`: Cadastro de fornecedores de insumos.
+* `CATEGORIA`: Organização dos materiais por grupos (Carnes, Laticínios, Hortifrúti, etc.).
+* `INSUMO`: Armazena saldos, estoque mínimo, preços médios, classificação na Curva ABC e datas de validade.
+* `MOVIMENTACAO_ESTOQUE`: Registra entradas (compras/reposição) e saídas (uso na cozinha/perdas).
+* `REGISTRO_FINANCEIRO`: Consolida receitas e despesas operacionais para a geração dos relatórios gráficos.
+
+---
+
+## 🚀 Como Executar o Projeto Localmente
 
 ### Pré-requisitos
-* Git instalado
-* PHP 8.5.10 (ou ambiente do banco de dados configurado)
-* MySQL Server / XAMPP
+* **WampServer** (ou XAMPP) instalado no Windows.
+* **Git** instalado.
 
 ### Passo a Passo
 
-1. **Clone o repositório:**
+1. **Clonar o Repositório**
+   Abra o terminal e execute o comando abaixo para clonar o projeto para o seu perfil:
    ```bash
-   git clone https://github.com/Leo300609/TCC_2026_Sistema_Restaurantes.git
+   git clone https://github.com/Sidjr456/TCC_DESENVOLVIMENTO_DE_SISTEMAS.git
